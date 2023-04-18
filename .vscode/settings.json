@@ -1,0 +1,6 @@
+{
+    "robotcode.robot.variables": {
+        "URL" : "https://rahulshettyacademy.com/AutomationPractice/",
+        "BROWSER" : "chrome",
+    },
+}
