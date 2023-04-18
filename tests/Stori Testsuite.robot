@@ -28,7 +28,8 @@ Resource    ../modules/Resources.resource
 Suite Setup    Abrir Navegador Y Establecer Velocidad
 Suite Teardown    Terminar Sesion
 
-Test Setup    Crear Reporte
+Test Setup
+...    Crear Reporte    ${TEST NAME}
 Test Teardown    Terminar Reporte
 
 
@@ -54,6 +55,10 @@ Test Ingresar Texto En Elemento De Sugerencia
 
     Ingresar Texto Y Seleccionar Coincidencia    ${input_autocomplete}    ${busqueda}    ${seleccion}
 
+    Agregar A Reporte
+    ...    descripcion=Se ingresa Me en el elemento web
+    ...    web_element=${input_autocomplete}
+
 Test Seleccionar Valores En Dropdown
     [Documentation]
     ...    Ingresara en la pagina y seran seleccionados
@@ -71,12 +76,19 @@ Test Seleccionar Valores En Dropdown
     Wait Until Element Is Enabled    ${select_numeros}
 
     Select From List By Label    ${select_numeros}    Option1
-    Log To Console    Se ha selecciondo Option1!
+
+    Agregar A Reporte
+    ...    descripcion=Se ha seleccionado el valor Option1
+    ...    web_element=${select_numeros}
 
     Sleep    2 seconds
 
     Select From List By Label    ${select_numeros}    Option2
-    Log To Console    Se ha selecciondo Option2!
+
+    Agregar A Reporte
+    ...    descripcion=Se ha seleccionado el valor Option2
+    ...    web_element=${select_numeros}
+
 
 Test En Ventana De Ejemplo Existe Texto Indicado
     [Documentation]
@@ -92,7 +104,7 @@ Test En Ventana De Ejemplo Existe Texto Indicado
     ...    document them in the RTM)
     [Tags]
     ...    exercise_3
-    ${button_abrir_nueva_ventana}    Set Variable    id:openwindow
+    ${button_abrir_nueva_ventana}    Set Variable    //button[@id="openwindow"]
     ${link_ver_todos_los_cursos}    Set Variable    //a[@class="main-btn"]
     ${texto_esperado}    Set Variable
     ...    the 30 day money back guarantee text
@@ -103,14 +115,22 @@ Test En Ventana De Ejemplo Existe Texto Indicado
     Click Button    ${button_abrir_nueva_ventana}
 
     Esperar Nueva Ventana Y Seleccionarla    ${1}
-    
+
     Wait Until Element Is Visible    ${link_ver_todos_los_cursos}
     Wait Until Element Is Enabled    ${link_ver_todos_los_cursos}
-    
+
+    Agregar A Reporte
+    ...    descripcion=Nueva ventana abierta
+
     TRY
         Page Should Contain    ${texto_esperado}
+        Agregar A Reporte
+        ...    descripcion=Texto esperado encontrado
+        Esperar Nueva Ventana Y Seleccionarla    ${0}
 
     EXCEPT
+        Agregar A Reporte
+        ...    descripcion=No se encontro el texto esperado
         Esperar Nueva Ventana Y Seleccionarla    ${0}
         Fail    No se encontro el texto: ${texto_esperado}
 
@@ -128,28 +148,42 @@ Test Encontrar Boton En Nueva Pagina
     ...    the first window. (Bonus: use xpath and css selector)
     [Tags]
     ...    exercise_3
-    ${button_abrir_pestania}    Set Variable    button[@id="opentab"]
+    ${link_abrir_pestania}    Set Variable    //a[@id="opentab"]
     ${link_ver_todos_los_cursos}    Set Variable    //a[@class="main-btn"]
     ${button_ver_todos_los_cursos}    Set Variable
     ...    //button[@contains(text(), "VIEW ALL COURSES")]
 
-    Wait Until Element Is Visible    ${button_abrir_pestania}
-    Wait Until Element Is Enabled    ${button_abrir_pestania}
+    Esperar Nueva Ventana Y Seleccionarla    ${0}
 
-    Click Button    ${button_abrir_pestania}
+    Wait Until Element Is Visible    ${link_abrir_pestania}
+    Wait Until Element Is Enabled    ${link_abrir_pestania}
+
+    Click Link    ${link_abrir_pestania}
 
     Esperar Nueva Ventana Y Seleccionarla    ${1}
 
     Wait Until Element Is Visible    ${link_ver_todos_los_cursos}
     Wait Until Element Is Enabled    ${link_ver_todos_los_cursos}
 
+    Agregar A Reporte
+    ...    descripcion=Nueva pestania abierta correctamente
+
     TRY
         Page Should Contain Button    ${button_ver_todos_los_cursos}    10 seconds
 
         Scroll Element Into View    ${button_ver_todos_los_cursos}
 
+        Agregar A Reporte
+        ...    descripcion=Boton ver todos los cursos encontrado
+        ...    web_element=${button_ver_todos_los_cursos}
+
+
     EXCEPT
+        Agregar A Reporte
+        ...    descripcion=Boton ver todos los cursos no encontrado
+
         Esperar Nueva Ventana Y Seleccionarla    ${0}
+
         Fail    No se encontro el boton para ver todos los cursos
 
     END
@@ -174,16 +208,29 @@ Test Obtener Texto De Un Alert
     ${texto_esperado}    Set Variable
     ...    Hello Stori Card, Are you sure you want to confirm?
 
+    Esperar Nueva Ventana Y Seleccionarla    ${0}
+
     Wait Until Element Is Visible    ${input_nombre}
     Wait Until Element Is Enabled    ${input_nombre}
 
     Input Text    ${input_nombre}    ${nombre}
+    Agregar A Reporte
+    ...    descripcion=nombre ingresado
+    ...    web_element=${input_nombre}
+
     Click Button    ${button_alerta}
-    ${mensaje_de_alert}    Handle Alert    timeout=2 seconds
+
+    Handle Alert    timeout=2 seconds
+    Agregar A Reporte
+    ...    descripcion=Alerta mostrada
 
     Input Text    ${input_nombre}    ${nombre}
+
     Click Button    ${button_confirmar}
+
     ${mensaje_de_confirmacion}    Handle Alert    timeout=2 seconds
+    Agregar A Reporte
+    ...    descripcion=Mensaje de confirmacion
 
     Should Be Equal    ${mensaje_de_confirmacion}    ${texto_esperado}
 
@@ -210,6 +257,9 @@ Test Obtener Los Cursos Con Costo Especifico
     Wait Until Element Is Enabled    ${table_cursos}
 
     Scroll Element Into View    ${table_cursos}
+    Agregar A Reporte
+    ...    descripcion=Tabla de cursos
+    ...    web_element=${table_cursos}
 
     @{cursos}    Get WebElements    ${xpath_cursos_con_costo_indicado}
 
@@ -233,6 +283,9 @@ Test Imprimir Nombre De Ingenieros
     ...    ${table_datos_usuarios}//table//td[1]
 
     @{datos_de_usuarios}    Get WebElements    ${row_nombre_usuarios}
+    Agregar A Reporte
+    ...    descripcion=Tabla de datos de usuario
+    ...    web_element=${table_datos_usuarios}
 
     FOR    ${informacion_de_usuario}    IN    @{datos_de_usuarios}
         ${nombre_usuario}    Get Text    ${informacion_de_usuario}
@@ -257,6 +310,10 @@ Test Obtener Texto Resaltado
     Scroll Element Into View    ${li_texto_solicitado}
 
     ${texto_solicitado}    Get Text    ${li_texto_solicitado}
+    Agregar A Reporte
+    ...    descripcion=Texto obtenido
+    ...    web_element=${li_texto_solicitado}
+
     Log To Console    Obtenido::${texto_solicitado}
 
     UnSelect Frame

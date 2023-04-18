@@ -80,6 +80,12 @@ O por ultimo
 Al terminar la ejecucion se generan 3 archivos _log.html_, _report.html_ y _output.xml_
 Donde _log.html_ contiene el paso a paso de la ejecucion de/los casos de prueba, _report.html_ contiene la informacion general de los casos de prueba y nos vincula al paso a de individual de cada una de las ejecuciones y por ultimo _output.xml_ que contiene toda la estructura de las keywords y casos de prueba.
 
+***NOTA:*** Es posible no generar alguno de estos archivos especificandolo en el comando de ejecucion
+
+- `--report None`
+- `--log None`
+- `--output None`
+
 [Para mas informacion clic aqui](https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#different-output-files)
 
 ### ***Proyecto***
@@ -119,8 +125,8 @@ Las opciones predeterminadas para la url y el navegador en el proyecto son:
 
 Es posible modificar estos valores agregando al comando las siguientes lineas:
 
-`--variable url:<url>`
-`--variable browser:<browser>`
+- `--variable url:<url>`
+- `--variable browser:<browser>`
 
 Los navegadores disponibles son:
 
@@ -211,3 +217,8 @@ Podemos encontrar la matriz de casos de prueba en la carpeta: `./documentation/M
 Este proyecto tiene la documentacion de todas las keywords en la carpeta `./documentation/util.html`
 
 [Mas informacion aqui](https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#libdoc)
+
+
+#### ***Evidencia***
+
+Cada ejecucion agregar a los archivos `log.html`, `report.html` y `output.xml` informacion de cada caso de prueba autamatizado, sin embargo, en la carpeta `./reports` se creara una carpeta con el nombre del caso de prueba y la hora del inicio de ejecucion y en esta carpeta se almacenaran las imagenes que se capturen con la keyword `Agregar A Reporte`. (Consulte el archivo `./documentation/Evidence.html`)

@@ -30,7 +30,8 @@ Library    Dialogs
 Library    OperatingSystem
 Library    Process
 Library    String
-Library   SeleniumLibrary    timeout=1 minutes
+Library   SeleniumLibrary
+...    timeout=30 minutes
 ...    run_on_failure=${None}
-...    screenshot_root_directory=..\reports
+...    screenshot_root_directory=..\\reports
 Library    ../libraries/Evidence.py
