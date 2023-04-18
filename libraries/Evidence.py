@@ -32,6 +32,11 @@ class Evidence:
         )
         self.reports_dir = os.path.join(self.base_dir, "reports")
 
+        if os.path.exists(self.reports_dir):
+            return
+
+        os.mkdir(self.reports_dir)
+
     def crear_reporte(self, testname : str) -> None:
         """Genera la estructura para guardar datos del reporte
 
